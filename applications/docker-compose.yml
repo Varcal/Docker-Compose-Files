@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:  
+  portainer:
+    container_name: 'vs_portainer'
+    image: portainer/portainer-ce
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 9090:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - varcalsys-network
+  
+  keycloak:
+    container_name: 'vs_keycloak'
+    image: quay.io/keycloak/keycloak:12.0.3
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: "admin"
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql
+      DB_DATABASE: keycloak
+      DB_USER: root
+      DB_PASSWORD: Admin@123
+    networks:
+      - varcalsys-network
+
+volumes:
+  portainer_data:
+
+networks: 
+  varcalsys-network: 
+    name: varcalsys-network
+    driver: bridge

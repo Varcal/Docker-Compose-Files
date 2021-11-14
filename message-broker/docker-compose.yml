@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    container_name: 'vs_rabbitmq'
+    image: rabbitmq:3.9-management
+    restart: always
+    hostname: varcalsys-mq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "15692:15692"
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq/mnesia
+    networks: 
+      - varcalsys-network
+
+  zookeeper:
+    container_name: 'vs_zookeeper'
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    networks: 
+      - varcalsys-network 
+      
+  kafka:
+    container_name: 'vs_kafka'
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "mytopic:3:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks: 
+      - varcalsys-network 
+
+
+networks: 
+  varcalsys-network:
+    name: 'varcalsys-network'
+    driver: bridge

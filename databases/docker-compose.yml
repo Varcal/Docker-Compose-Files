@@ -1,0 +1,109 @@
+version: '3.7'
+
+services:
+    sqlserver:
+        container_name: "vs_mssql"
+        image: mcr.microsoft.com/mssql/server:latest
+        restart: "always"
+        environment: 
+            ACCEPT_EULA: "Y"
+            SA_PASSWORD: "Admin@123"
+        ports:
+            - 1433:1433
+        volumes: 
+            - mssql_data:/var/opt/mssql/
+        networks: 
+            - varcalsys-network
+   
+    oracle:
+        container_name: "vs_oracle"
+        image: oracleinanutshell/oracle-xe-11g
+        restart: always
+        ports:
+            - 1521:1521
+            - 7070:8080
+        volumes:
+            - oracle_data:/opt/oracle/oradata
+
+    mysql:
+        container_name: 'vs_mysql'
+        image: mysql:5.7.30
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: "Admin@123"
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+        networks:
+            - varcalsys-network
+
+    redis:
+        container_name: 'vs_redis'
+        image: redis
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./redis:/data
+        networks: 
+            - varcalsys-network
+        
+    mongo:
+        container_name: 'vs_mongo'
+        image: mongo
+        ports:
+            - "27017:27017"
+        environment:
+            MONGO_INITDB_ROOT_ISERNAME: varcal
+            MONGO_INIIDB_ROOT_PASSWORD: Admin@123
+        volumes:
+            - ./mongodb:/etc/mongo
+        networks: 
+            - varcalsys-network
+        
+    mongo-express:
+        container_name: 'vs_mongo-express'
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: varcal
+            ME_CONFIG_MONGODB_ADMINPASSWORD: Admin@123
+        networks: 
+            - varcalsys-network
+
+    eventstore:
+        image: eventstore/eventstore:21.6.0-buster-slim
+        container_name: 'vs_eventstore'
+        restart: always
+        environment:
+            - EVENTSTORE_CLUSTER_SIZE=1
+            - EVENTSTORE_RUN_PROJECTIONS=All
+            - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+            - EVENTSTORE_EXT_TCP_PORT=1113
+            - EVENTSTORE_HTTP_PORT=2113
+            - EVENTSTORE_INSECURE=true
+            - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+            - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+        ports:
+            - "1113:1113"
+            - "2113:2113"
+        volumes:
+            - type: volume
+              source: eventstore-volume-data
+              target: /var/lib/eventstore
+            - type: volume
+              source: eventstore-volume-logs
+              target: /var/log/eventstore
+
+networks: 
+    varcalsys-network:
+        name: varcalsys-network
+        driver: bridge
+
+volumes: 
+    mssql_data:
+    oracle_data:
+    eventstore-volume-data:
+    eventstore-volume-logs:
