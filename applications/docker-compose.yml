@@ -23,10 +23,10 @@ services:
     environment:
       KEYCLOAK_USER: "admin"
       KEYCLOAK_PASSWORD: "admin"
-      DB_VENDOR: MYSQL
-      DB_ADDR: mysql
+      DB_VENDOR: MSSQL
+      DB_ADDR: sqlserver
       DB_DATABASE: keycloak
-      DB_USER: root
+      DB_USER: sa
       DB_PASSWORD: Admin@123
     networks:
       - varcalsys-network
