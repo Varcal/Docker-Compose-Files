@@ -11,7 +11,9 @@ services:
         ports:
             - 1433:1433
         volumes: 
-            - mssql_data:/var/opt/mssql/
+            - type: volume
+              source: mssql_data
+              target: /var/opt/mssql/
         networks: 
             - varcalsys-network
    
@@ -23,7 +25,9 @@ services:
             - 1521:1521
             - 7070:8080
         volumes:
-            - oracle_data:/opt/oracle/oradata
+            - type: volume
+              source: oracle_data
+              target: /opt/oracle/oradata
 
     mysql:
         container_name: 'vs_mysql'
@@ -34,7 +38,9 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - ./mysql:/var/lib/mysql
+            - type: volume
+              source: mysql_data
+              target: /var/lib/mysql
         networks:
             - varcalsys-network
 
@@ -44,7 +50,9 @@ services:
         ports:
             - "6379:6379"
         volumes:
-            - ./redis:/data
+            - type: volume
+              source: redis_data
+              target: /data
         networks: 
             - varcalsys-network
         
@@ -57,7 +65,9 @@ services:
             MONGO_INITDB_ROOT_ISERNAME: varcal
             MONGO_INIIDB_ROOT_PASSWORD: Admin@123
         volumes:
-            - ./mongodb:/etc/mongo
+            - type: volume
+              source: mongo_data
+              target: /etc/mongo
         networks: 
             - varcalsys-network
         
@@ -107,3 +117,6 @@ volumes:
     oracle_data:
     eventstore-volume-data:
     eventstore-volume-logs:
+    mongo_data:
+    redis_data:
+    mysql_data:
