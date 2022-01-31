@@ -28,6 +28,8 @@ services:
             - type: volume
               source: oracle_data
               target: /opt/oracle/oradata
+        networks: 
+            - varcalsys-network
 
     mysql:
         container_name: 'vs_mysql'
@@ -47,6 +49,7 @@ services:
     redis:
         container_name: 'vs_redis'
         image: redis
+        restart: always
         ports:
             - "6379:6379"
         volumes:
@@ -106,6 +109,8 @@ services:
             - type: volume
               source: eventstore-volume-logs
               target: /var/log/eventstore
+        networks: 
+            - varcalsys-network
 
 networks: 
     varcalsys-network:

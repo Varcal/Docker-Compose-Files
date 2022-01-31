@@ -12,8 +12,8 @@ services:
       - "15692:15692"
     volumes:
       - type: volume
-        target: rabbitmq_data
-        source: /var/lib/rabbitmq/mnesia
+        source: rabbitmq_data
+        target: /var/lib/rabbitmq/mnesia
     networks: 
       - varcalsys-network
 
@@ -35,13 +35,14 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "mytopic:3:1"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - kafka_data:/var/run/docker.sock
     networks: 
       - varcalsys-network 
 
 
 volumes: 
     rabbitmq_data:
+    kafka_data:
 
 networks: 
   varcalsys-network:
