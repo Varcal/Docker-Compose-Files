@@ -16,7 +16,16 @@ services:
               target: /var/opt/mssql/
         networks: 
             - varcalsys-network
-   
+
+    postgres:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: Admin@123
+        ports:
+            - 5432:5432
+        volumes:
+            - postgres_data:/varlib/postgresql/data
     oracle:
         container_name: "vs_oracle"
         image: oracleinanutshell/oracle-xe-11g
@@ -28,6 +37,8 @@ services:
             - type: volume
               source: oracle_data
               target: /opt/oracle/oradata
+        networks: 
+            - varcalsys-network
 
     mysql:
         container_name: 'vs_mysql'
@@ -47,6 +58,7 @@ services:
     redis:
         container_name: 'vs_redis'
         image: redis
+        restart: always
         ports:
             - "6379:6379"
         volumes:
@@ -106,6 +118,8 @@ services:
             - type: volume
               source: eventstore-volume-logs
               target: /var/log/eventstore
+        networks: 
+            - varcalsys-network
 
 networks: 
     varcalsys-network:
@@ -120,3 +134,4 @@ volumes:
     mongo_data:
     redis_data:
     mysql_data:
+    postgres_data:
