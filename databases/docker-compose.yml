@@ -17,15 +17,20 @@ services:
         networks: 
             - varcalsys-network
 
-    postgres:
-        image: postgres
+    postgresql:
+        container_name: "vs_postgres"
+        image: postgres:12
         restart: always
         environment:
             POSTGRES_PASSWORD: Admin@123
         ports:
             - 5432:5432
         volumes:
-            - postgres_data:/varlib/postgresql/data
+            - postgresql:/varlib/postgresql
+            - postgresql_data:/varlib/postgresql/data
+        networks: 
+            - varcalsys-network
+
     oracle:
         container_name: "vs_oracle"
         image: oracleinanutshell/oracle-xe-11g
@@ -134,4 +139,5 @@ volumes:
     mongo_data:
     redis_data:
     mysql_data:
-    postgres_data:
+    postgresql:
+    postgresql_data:
