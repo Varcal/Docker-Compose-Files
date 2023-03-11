@@ -1,6 +1,5 @@
 databases/*
 message-broker/rabbitmq-cluster/storage/*
 applications/*
-storage/*
 databases/*
 cache/*
