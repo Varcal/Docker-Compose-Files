@@ -25,7 +25,7 @@ services:
       KEYCLOAK_PASSWORD: "admin"
       DB_VENDOR: MSSQL
       DB_ADDR: sqlserver
-      DB_DATABASE: keycloak
+      DB_DATABASE: KeycloakDb
       DB_USER: sa
       DB_PASSWORD: Admin@123
     networks:
