@@ -62,7 +62,7 @@ services:
 
     redis:
         container_name: 'vs_redis'
-        image: redis
+        image: redis:alpine
         restart: always
         ports:
             - "6379:6379"
