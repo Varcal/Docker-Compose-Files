@@ -3,7 +3,7 @@ version: '3.7'
 services:
   rabbitmq:
     container_name: 'vs_rabbitmq'
-    image: rabbitmq:3.9-management
+    image: rabbitmq:4-management
     restart: always
     hostname: varcalsys-mq
     ports:
