@@ -5,15 +5,17 @@ services:
     container_name: 'vs_rabbitmq'
     image: rabbitmq:4-management
     restart: always
-    hostname: varcalsys-mq
+    hostname: vs_rabbitmq
     ports:
       - "15672:15672"
       - "5672:5672"
       - "15692:15692"
     volumes:
-      - type: volume
-        source: rabbitmq_data
-        target: /var/lib/rabbitmq/mnesia
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia
+    environment:
+      RABBITMQ_DEFAULT_USER: varcal
+      RABBITMQ_DEFAULT_PASS: Admin@123
     networks: 
       - varcalsys-network
 

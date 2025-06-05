@@ -19,7 +19,7 @@ services:
 
     postgresql:
         container_name: "vs_postgres"
-        image: postgres:12
+        image: postgres:15
         restart: always
         environment:
             POSTGRES_PASSWORD: Admin@123

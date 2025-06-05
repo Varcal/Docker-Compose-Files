@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:  
   portainer:
@@ -16,20 +16,29 @@ services:
   
   keycloak:
     container_name: 'vs_keycloak'
-    image: quay.io/keycloak/keycloak:12.0.3
+    image: quay.io/keycloak/keycloak:24.0.4
+    command: start-dev --http-port=8080
     restart: always
     ports:
       - 8080:8080
     environment:
-      KEYCLOAK_USER: "admin"
-      KEYCLOAK_PASSWORD: "admin"
-      DB_VENDOR: MSSQL
-      DB_ADDR: sqlserver
-      DB_DATABASE: KeycloakDb
-      DB_USER: sa
-      DB_PASSWORD: Admin@123
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mssql
+      KC_DB_URL: jdbc:sqlserver://sqlserver:1433;databaseName=KeycloakDb;encrypt=false
+      KC_DB_USERNAME: sa
+      KC_DB_PASSWORD: Admin@123
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_STRICT: false
+
+      # Desativar XA e recovery COMPLETAMENTE
+      KC_TRANSACTION_XA_ENABLED: false
+      QUARKUS_TRANSACTION_MANAGER_ENABLE_RECOVERY: false
+      QUARKUS_DATASOURCE_XA_ENABLED: false
     networks:
       - varcalsys-network
+
+
 
   sonarqube:
     container_name: 'vs_sonarqube'
